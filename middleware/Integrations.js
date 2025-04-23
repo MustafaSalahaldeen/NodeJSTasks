@@ -49,7 +49,7 @@ function sendResponse(req, res, statusCode, message) {
     responseBody['code'] = statusCode;
     res.header('Content-Type', 'application/json');
     res.status(statusCode).send(responseBody);
-    logging.logRequest(req, res, statusCode, message);
+    logging.logRequest(req, responseBody, statusCode, message);
 }
 
 module.exports = { callAPI, sendResponse};

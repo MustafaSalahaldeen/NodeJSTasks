@@ -30,7 +30,7 @@ app.post(`/api/${randomCatImages.name}`, async (req, res) => {
     const response = await functions.callAPI(config.endpoint, config.method, params, config.headers, res, req);
 });
 
-app.use('/:anything', (req, res,next) => {
+app.use('{*splat}', (req, res,next) => {
    functions.sendResponse(req, res, 404, DEFAULT_ERROR_MESSAGE);
 });
 
