@@ -1,7 +1,7 @@
 const axios = require('axios');
 const logging = require('./Logging.js');
 
-async function callAPI(url, method, params, headers, req, res) {
+async function callAPI(url, method, params, headers, res, req) {
     const error = {};
     if (url === undefined || url === null) {
         sendResponse(req, res, 400, "URL is required");
@@ -38,7 +38,7 @@ async function callAPI(url, method, params, headers, req, res) {
         sendResponse(req, res, 200, response.data); 
     }
     else {
-        sendResponse(res, 400, "Invalid method. Use GET, POST, PUT or DELETE.");
+        sendResponse(req, res, 400, "Invalid method. Use GET, POST, PUT or DELETE.");
     }
 
 }
