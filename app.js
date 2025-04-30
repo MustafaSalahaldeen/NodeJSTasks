@@ -1,6 +1,8 @@
 const express = require('express');
-const functions = require('./middleware/Integrations.js');
-const dataManipulation = require('./middleware/DataManipulation.js');
+const functions = require('./Middleware/Integrations.js');
+const dataManipulation = require('./Middleware/DataManipulation.js');
+const cache = require('./Middleware/Cache.js');
+const limiter = require('./Middleware/Limiter.js');
 require('dotenv').config({ path: './Resources/constants.env' });
 
 const PORT = process.env.PORT;  
@@ -8,6 +10,8 @@ const APIS = JSON.parse(process.env.APIS);
 const DEFAULT_ERROR_MESSAGE = process.env.DEFAULT_ERROR_MESSAGE;
 
 const app = express();
+
+app.use(limiter.limit);
 
 const booksAPI = APIS.find(api => api.name === 'books');
 app.get(`/api/${booksAPI.name}`, async (req, res) => {

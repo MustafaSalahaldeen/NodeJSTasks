@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const root = require('./path.js');
+const root = require('./Path.js');
 
 function logRequest(req, resBody, statusCode, message) {
     const date = new Date().toISOString();

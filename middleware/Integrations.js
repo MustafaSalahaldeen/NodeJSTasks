@@ -1,8 +1,10 @@
-const axios = require('axios');
 const logging = require('./Logging.js');
+const cahce = require('./Cache.js');
+const limiter = require('./Limiter.js');
 
 async function callAPI(url, method, params, headers, res, req) {
     const error = {};
+    limiter.numberOfHits -= 1;
     if (url === undefined || url === null) {
         sendResponse(req, res, 400, "URL is required");
     }
@@ -11,45 +13,32 @@ async function callAPI(url, method, params, headers, res, req) {
         sendResponse(req, res, 400, "Method is required");
     }
 
-    if (method.toUpperCase() === "GET") {
-        var paramsString = '';
-        for ([key, value] of Object.entries(params)) {
-            if (key && value) {
-                if (!paramsString)
-                    paramsString += `?${key}=${value}`;
-                else
-                    paramsString += `&${key}=${value}`;
+    if (method.toUpperCase() === "GET" || method.toUpperCase() === "POST" || method.toUpperCase() === "PUT" || method.toUpperCase() === "DELETE") {
+        if (method.toUpperCase() === "GET") {
+            var paramsString = '';
+            for ([key, value] of Object.entries(params)) {
+                if (key && value) {
+                    if (!paramsString)
+                        paramsString += `?${key}=${value}`;
+                    else
+                        paramsString += `&${key}=${value}`;
+                }
             }
+            url = `${url}${paramsString}`;
         }
-        const response = await axios.get(`${url}${paramsString}`, params, headers)
-        sendResponse(req, res, 200, response.data); 
-    }
+        cahce.cahceMiddleware(url, params, headers, res, req);
 
-    else if (method.toUpperCase() === "POST") {
-        const response = await axios.post(url, params, headers)
-        sendResponse(req, res, 200, response.data); 
     }
-    else if (method.toUpperCase() === "PUT") {
-        const response = await axios.put(url, params, headers)
-        sendResponse(req, res, 200, response.data); 
-    }
-    else if (method.toUpperCase() === "DELETE") {
-        const response = await axios.delete(url, params, headers)
-        sendResponse(req, res, 200, response.data); 
-    }
-    else {
-        sendResponse(req, res, 400, "Invalid method. Use GET, POST, PUT or DELETE.");
-    }
-
 }
 
 function sendResponse(req, res, statusCode, message) {
     const responseBody = {};
     responseBody['message'] = message;
     responseBody['code'] = statusCode;
+    responseBody['numberOfHits'] = limiter.numberOfHits;
     res.header('Content-Type', 'application/json');
     res.status(statusCode).send(responseBody);
     logging.logRequest(req, responseBody, statusCode, message);
 }
 
-module.exports = { callAPI, sendResponse};
+module.exports = { callAPI, sendResponse };

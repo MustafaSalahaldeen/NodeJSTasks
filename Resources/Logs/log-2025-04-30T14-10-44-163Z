@@ -1,0 +1,10 @@
+Date: 2025-04-30T14:10:44.163Z
+Requester IP: ::ffff:127.0.0.1
+Request Method: GET
+Request URL: /api/books?title=lord%20of%20the%20ringss
+Request Query: {"title":"lord of the ringss"}
+Request Params: {}
+Message: [object Object]
+Status Code: 200
+Response Body: {"message":{"numFound":0,"start":0,"numFoundExact":true,"num_found":0,"documentation_url":"https://openlibrary.org/dev/docs/api/search","q":"lord of the ringss","offset":null,"docs":[]},"code":200}
+----------------------------------------

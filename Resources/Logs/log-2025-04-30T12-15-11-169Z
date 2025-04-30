@@ -1,0 +1,10 @@
+Date: 2025-04-30T12:15:11.169Z
+Requester IP: ::ffff:127.0.0.1
+Request Method: GET
+Request URL: /api%0A/books?title=lord%20of%20the%20rings
+Request Query: {"title":"lord of the rings"}
+Request Params: {"splat":["","api\n","books"]}
+Message: An error occurred while processing your request. Please try again later.
+Status Code: 404
+Response Body: {"message":"An error occurred while processing your request. Please try again later.","code":404}
+----------------------------------------
